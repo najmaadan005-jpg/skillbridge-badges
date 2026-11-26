@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Skill test answer keys live only in the `submit_skill_test` database function; `src/lib/skills.ts` holds questions without answers (generated together so indexes match). Why: scores and badges must not be forgeable from the browser.
+- Badges are public read-only records created only by that function; employers contact candidates via `contact_requests`, never by exposing emails. Why: shareable verification without leaking contact details.

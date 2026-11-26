@@ -10,33 +10,132 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedEmployerRouteImport } from './routes/_authenticated/employer'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as BadgeIdRouteImport } from './routes/badge.$id'
+import { Route as AuthenticatedResultAttemptIdRouteImport } from './routes/_authenticated/result.$attemptId'
+import { Route as AuthenticatedTestIndexRouteImport } from './routes/_authenticated/test.index'
+import { Route as AuthenticatedTestSkillRouteImport } from './routes/_authenticated/test.$skill'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedEmployerRoute = AuthenticatedEmployerRouteImport.update({
+  id: '/employer',
+  path: '/employer',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const BadgeIdRoute = BadgeIdRouteImport.update({
+  id: '/badge/$id',
+  path: '/badge/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedResultAttemptIdRoute =
+  AuthenticatedResultAttemptIdRouteImport.update({
+    id: '/result/$attemptId',
+    path: '/result/$attemptId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTestIndexRoute = AuthenticatedTestIndexRouteImport.update({
+  id: '/test/',
+  path: '/test/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTestSkillRoute = AuthenticatedTestSkillRouteImport.update({
+  id: '/test/$skill',
+  path: '/test/$skill',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/employer': typeof AuthenticatedEmployerRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/badge/$id': typeof BadgeIdRoute
+  '/result/$attemptId': typeof AuthenticatedResultAttemptIdRoute
+  '/test/$skill': typeof AuthenticatedTestSkillRoute
+  '/test/': typeof AuthenticatedTestIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/employer': typeof AuthenticatedEmployerRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/badge/$id': typeof BadgeIdRoute
+  '/result/$attemptId': typeof AuthenticatedResultAttemptIdRoute
+  '/test/$skill': typeof AuthenticatedTestSkillRoute
+  '/test': typeof AuthenticatedTestIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/employer': typeof AuthenticatedEmployerRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/badge/$id': typeof BadgeIdRoute
+  '/_authenticated/result/$attemptId': typeof AuthenticatedResultAttemptIdRoute
+  '/_authenticated/test/$skill': typeof AuthenticatedTestSkillRoute
+  '/_authenticated/test/': typeof AuthenticatedTestIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/employer'
+    | '/profile'
+    | '/badge/$id'
+    | '/result/$attemptId'
+    | '/test/$skill'
+    | '/test/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/employer'
+    | '/profile'
+    | '/badge/$id'
+    | '/result/$attemptId'
+    | '/test/$skill'
+    | '/test'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/employer'
+    | '/_authenticated/profile'
+    | '/badge/$id'
+    | '/_authenticated/result/$attemptId'
+    | '/_authenticated/test/$skill'
+    | '/_authenticated/test/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  BadgeIdRoute: typeof BadgeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +147,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/employer': {
+      id: '/_authenticated/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof AuthenticatedEmployerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/badge/$id': {
+      id: '/badge/$id'
+      path: '/badge/$id'
+      fullPath: '/badge/$id'
+      preLoaderRoute: typeof BadgeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/result/$attemptId': {
+      id: '/_authenticated/result/$attemptId'
+      path: '/result/$attemptId'
+      fullPath: '/result/$attemptId'
+      preLoaderRoute: typeof AuthenticatedResultAttemptIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/test/': {
+      id: '/_authenticated/test/'
+      path: '/test'
+      fullPath: '/test/'
+      preLoaderRoute: typeof AuthenticatedTestIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/test/$skill': {
+      id: '/_authenticated/test/$skill'
+      path: '/test/$skill'
+      fullPath: '/test/$skill'
+      preLoaderRoute: typeof AuthenticatedTestSkillRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedEmployerRoute: typeof AuthenticatedEmployerRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedResultAttemptIdRoute: typeof AuthenticatedResultAttemptIdRoute
+  AuthenticatedTestSkillRoute: typeof AuthenticatedTestSkillRoute
+  AuthenticatedTestIndexRoute: typeof AuthenticatedTestIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedEmployerRoute: AuthenticatedEmployerRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedResultAttemptIdRoute: AuthenticatedResultAttemptIdRoute,
+  AuthenticatedTestSkillRoute: AuthenticatedTestSkillRoute,
+  AuthenticatedTestIndexRoute: AuthenticatedTestIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  BadgeIdRoute: BadgeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
