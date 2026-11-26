@@ -42,7 +42,12 @@ function ProfilePage() {
     queryFn: async () => {
       const { data, error } = await supabase.from("badges").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      const best = new Map<string, (typeof data)[number]>();
+      for (const b of data) {
+        const cur = best.get(b.skill);
+        if (!cur || b.score_percent > cur.score_percent) best.set(b.skill, b);
+      }
+      return [...best.values()];
     },
   });
   const messages = useQuery({
